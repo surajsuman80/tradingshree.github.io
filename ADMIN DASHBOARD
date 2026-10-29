@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Shree - Master Admin Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
+        body {
+            background-color: #020617;
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-mono-num {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-xs">
+
+    <!-- ADMIN HEADER -->
+    <header class="bg-[#030712] border-b border-gray-900 px-6 py-3 flex items-center justify-between sticky top-0 z-40 backdrop-blur">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-purple-950/50">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+                <h1 class="text-white font-black text-sm md:text-base tracking-wider leading-none">TRADING SHREE</h1>
+                <span class="text-purple-400 font-extrabold text-[9px] tracking-widest block mt-0.5">CENTRAL ADMIN TERMINAL</span>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <span class="bg-purple-950/60 border border-purple-800/60 text-purple-300 font-mono-num font-bold text-[10px] px-3 py-1 rounded-full flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>SYNC LIVE</span>
+            </span>
+            <a href="index.html" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                <span>Open Client Terminal</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-5">
+        
+        <!-- TOP STATS CARDS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+            <div class="bg-[#050b18] border border-gray-900 rounded-xl p-4">
+                <span class="text-gray-400 font-bold text-[10px] uppercase tracking-wider">Total Registered Clients</span>
+                <p class="text-white font-black text-2xl font-mono-num mt-1" id="totalClientsCount">0</p>
+                <span class="text-[9px] text-emerald-400 font-semibold mt-1 block">Live synced database</span>
+            </div>
+            <div class="bg-[#050b18] border border-gray-900 rounded-xl p-4">
+                <span class="text-gray-400 font-bold text-[10px] uppercase tracking-wider">Active API Keys</span>
+                <p class="text-emerald-400 font-black text-2xl font-mono-num mt-1" id="activeApiCount">0</p>
+                <span class="text-[9px] text-gray-500 mt-1 block">Broker credentials linked</span>
+            </div>
+            <div class="bg-[#050b18] border border-gray-900 rounded-xl p-4">
+                <span class="text-gray-400 font-bold text-[10px] uppercase tracking-wider">Primary Broker</span>
+                <p class="text-blue-400 font-black text-lg mt-1.5" id="topBrokerName">Zerodha</p>
+                <span class="text-[9px] text-gray-500 mt-1 block">Kite Connect &amp; TT API</span>
+            </div>
+            <div class="bg-[#050b18] border border-gray-900 rounded-xl p-4">
+                <span class="text-gray-400 font-bold text-[10px] uppercase tracking-wider">Terminal Security</span>
+                <p class="text-emerald-400 font-black text-lg mt-1.5 flex items-center gap-1.5">
+                    <i class="fa-solid fa-lock text-sm"></i>
+                    <span>Encrypted</span>
+                </p>
+                <span class="text-[9px] text-gray-500 mt-1 block">Client Sandboxed API</span>
+            </div>
+        </div>
+
+        <!-- CLIENT DIRECTORY TABLE CONTAINER -->
+        <div class="bg-[#050b18] border border-gray-900 rounded-xl overflow-hidden shadow-2xl">
+            
+            <!-- Table Action Toolbar -->
+            <div class="p-4 bg-gray-950/70 border-b border-gray-900 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div>
+                    <h3 class="text-white font-black text-sm uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-users text-purple-400"></i>
+                        <span>Client Master Profiles &amp; Broker API Hub</span>
+                    </h3>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Real-time profile records configured from client terminals</p>
+                </div>
+
+                <!-- Search & Filter Controls -->
+                <div class="flex items-center space-x-2 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-500 text-xs"></i>
+                        <input type="text" id="searchClientInput" onkeyup="filterClients()" placeholder="Search Client ID, Phone, Email..." class="w-full bg-[#030712] border border-gray-800 text-white rounded-lg pl-8 pr-3 py-1.5 text-xs focus:border-purple-500 outline-none">
+                    </div>
+                    <button onclick="refreshAdminData()" class="bg-gray-900 hover:bg-gray-800 border border-gray-800 text-gray-300 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                        <span>Refresh</span>
+                    </button>
+                    <button onclick="clearAllClients()" class="bg-red-950/40 hover:bg-red-900/60 border border-red-900/60 text-red-400 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Client Records Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[850px]">
+                    <thead>
+                        <tr class="border-b border-gray-900 text-gray-400 font-extrabold uppercase tracking-wider text-[9px] bg-[#030712]/80">
+                            <th class="py-3 px-4">Client ID / Name</th>
+                            <th class="py-3 px-4">Contact Info (Phone / Email)</th>
+                            <th class="py-3 px-4">Broker Account</th>
+                            <th class="py-3 px-4">API Key &amp; Token</th>
+                            <th class="py-3 px-4">Broker Secret</th>
+                            <th class="py-3 px-4">Balance / P&amp;L</th>
+                            <th class="py-3 px-4 text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-900 font-semibold" id="adminClientTableBody">
+                        <!-- Dynamic Records Load Here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div id="noClientsNotice" class="hidden p-8 text-center text-gray-500 space-y-2">
+                <i class="fa-solid fa-user-slash text-2xl text-gray-600"></i>
+                <p class="text-xs font-bold text-gray-400">No client data found yet.</p>
+                <p class="text-[10px]">When clients configure their credentials on the Client Dashboard, they will show up here automatically.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ADMIN LOGIC -->
+    <script>
+        const MASTER_CLIENTS_KEY = "ts_all_clients_master";
+        let clientRecords = [];
+
+        function refreshAdminData() {
+            const raw = localStorage.getItem(MASTER_CLIENTS_KEY);
+            if (raw) {
+                try {
+                    clientRecords = JSON.parse(raw);
+                } catch(e) {
+                    clientRecords = [];
+                }
+            } else {
+                // Default initial client profile if empty
+                clientRecords = [
+                    {
+                        clientId: "SURAJ SUMAN",
+                        mobile: "+91 9435463157",
+                        email: "mrsuraj3157@gmail.com",
+                        broker: "Zerodha",
+                        apiKey: "zrd_live_api_8849",
+                        apiSecret: "sec_token_9941a87b",
+                        todayPnL: "+₹ 2,345.60",
+                        balance: "₹ 1,25,430.50",
+                        status: "Active",
+                        updatedAt: "Auto Synced"
+                    }
+                ];
+                localStorage.setItem(MASTER_CLIENTS_KEY, JSON.stringify(clientRecords));
+            }
+
+            renderClientTable(clientRecords);
+            updateDashboardMetrics(clientRecords);
+        }
+
+        function renderClientTable(records) {
+            const tbody = document.getElementById('adminClientTableBody');
+            const notice = document.getElementById('noClientsNotice');
+            tbody.innerHTML = "";
+
+            if (!records || records.length === 0) {
+                notice.classList.remove('hidden');
+                return;
+            } else {
+                notice.classList.add('hidden');
+            }
+
+            records.forEach((c, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-900/40 transition";
+
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 font-black text-white text-xs">
+                        <div class="flex items-center space-x-2.5">
+                            <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                                ${c.clientId.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <p class="text-white font-extrabold leading-none">${c.clientId}</p>
+                                <span class="text-[9px] text-yellow-500 font-bold uppercase mt-0.5 block">Premium Plan</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <p class="text-gray-200 font-mono-num font-bold text-xs">${c.mobile || '--'}</p>
+                        <span class="text-[10px] text-gray-400 font-mono-num block">${c.email || '--'}</span>
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <span class="text-blue-400 font-extrabold bg-blue-950/60 border border-blue-900/60 px-2.5 py-1 rounded text-[10px]">
+                            ${c.broker || 'Zerodha'}
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-4 font-mono-num text-xs text-gray-300">
+                        ${c.apiKey ? `<span class="bg-gray-900 px-2 py-0.5 rounded border border-gray-800 text-[10px] text-emerald-400 font-bold">${c.apiKey}</span>` : '<span class="text-gray-600">Not Set</span>'}
+                    </td>
+                    <td class="py-3.5 px-4 font-mono-num text-xs">
+                        ${c.apiSecret ? `
+                            <div class="flex items-center space-x-1.5">
+                                <span id="sec-text-${idx}" class="text-gray-500 font-bold text-[10px]">••••••••••••</span>
+                                <button onclick="toggleAdminSecret(${idx}, '${c.apiSecret}')" class="text-gray-400 hover:text-white p-1">
+                                    <i class="fa-regular fa-eye text-xs" id="sec-icon-${idx}"></i>
+                                </button>
+                            </div>
+                        ` : '<span class="text-gray-600">--</span>'}
+                    </td>
+                    <td class="py-3.5 px-4 font-mono-num">
+                        <p class="text-white font-bold text-xs">${c.balance || '₹ 1,25,430.50'}</p>
+                        <span class="text-emerald-400 font-extrabold text-[10px]">${c.todayPnL || '+₹ 2,345.60'}</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center">
+                        <span class="text-[9px] text-emerald-400 bg-emerald-950/50 border border-emerald-900/60 px-2 py-0.5 rounded-full font-bold inline-flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span>${c.status || 'Active'}</span>
+                        </span>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleAdminSecret(idx, realSecret) {
+            const textEl = document.getElementById(`sec-text-${idx}`);
+            const iconEl = document.getElementById(`sec-icon-${idx}`);
+
+            if (textEl.textContent.includes('•')) {
+                textEl.textContent = realSecret;
+                textEl.className = "text-purple-300 font-bold text-[10px] bg-purple-950/50 px-1.5 py-0.5 rounded";
+                iconEl.className = "fa-regular fa-eye-slash text-xs text-purple-400";
+            } else {
+                textEl.textContent = "••••••••••••";
+                textEl.className = "text-gray-500 font-bold text-[10px]";
+                iconEl.className = "fa-regular fa-eye text-xs text-gray-400";
+            }
+        }
+
+        function updateDashboardMetrics(records) {
+            document.getElementById('totalClientsCount').textContent = records.length;
+            const apiKeysCount = records.filter(r => !!r.apiKey).length;
+            document.getElementById('activeApiCount').textContent = apiKeysCount;
+
+            if (records.length > 0) {
+                document.getElementById('topBrokerName').textContent = records[0].broker || 'Zerodha';
+            }
+        }
+
+        function filterClients() {
+            const query = document.getElementById('searchClientInput').value.toLowerCase();
+            const filtered = clientRecords.filter(c => 
+                (c.clientId && c.clientId.toLowerCase().includes(query)) ||
+                (c.mobile && c.mobile.toLowerCase().includes(query)) ||
+                (c.email && c.email.toLowerCase().includes(query)) ||
+                (c.broker && c.broker.toLowerCase().includes(query))
+            );
+            renderClientTable(filtered);
+        }
+
+        function clearAllClients() {
+            if (confirm("Are you sure you want to reset all client records?")) {
+                localStorage.removeItem(MASTER_CLIENTS_KEY);
+                refreshAdminData();
+            }
+        }
+
+        // Live Auto-Sync: Agar client doosre tab me data save kare toh Admin screen bina refresh ke update ho jaye
+        window.addEventListener('storage', (e) => {
+            if (e.key === MASTER_CLIENTS_KEY) {
+                refreshAdminData();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            refreshAdminData();
+        });
+    </script>
+</body>
+</html>
