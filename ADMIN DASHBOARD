@@ -3,6 +3,888 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Shree - Client Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+        }
+
+        .font-mono-num {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+
+        /* Price tick glow flashes */
+        .tick-green {
+            animation: flashGreen 0.6s ease-out;
+        }
+        .tick-red {
+            animation: flashRed 0.6s ease-out;
+        }
+        @keyframes flashGreen {
+            0% { background-color: rgba(16, 185, 129, 0.25); color: #34d399; }
+            100% { background-color: transparent; }
+        }
+        @keyframes flashRed {
+            0% { background-color: rgba(239, 68, 68, 0.25); color: #f87171; }
+            100% { background-color: transparent; }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+        .live-dot {
+            animation: pulseGlow 1.8s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-xs overflow-x-hidden selection:bg-blue-600 selection:text-white">
+
+    <!-- MAIN NAVBAR -->
+    <header class="bg-[#030712] border-b border-gray-900 px-3 md:px-5 py-2.5 flex items-center justify-between sticky top-0 z-40 backdrop-blur">
+        <div class="flex items-center space-x-3">
+            <button id="sidebarToggle" class="text-gray-400 hover:text-white lg:hidden p-1 focus:outline-none">
+                <i class="fa-solid fa-bars text-base"></i>
+            </button>
+            
+            <div class="w-8 h-8 shrink-0">
+                <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow">
+                    <circle cx="100" cy="100" r="96" fill="#e8f3fb" stroke="#cbdfe9" stroke-width="3"/>
+                    <rect x="42" y="78" width="22" height="48" rx="5" fill="#d93829"/>
+                    <rect x="71" y="60" width="22" height="66" rx="5" fill="#facc15"/>
+                    <rect x="100" y="44" width="22" height="82" rx="5" fill="#16a34a"/>
+                    <path d="M 32 135 C 70 135, 115 125, 155 84 L 142 82 L 168 80 L 157 106 L 149 93 C 112 133, 68 142, 32 139 Z" fill="#ea580c"/>
+                    <text x="100" y="152" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-weight="800" fill="#22c55e" letter-spacing="0.5">TRADING SHREE</text>
+                    <text x="100" y="169" text-anchor="middle" font-family="'Inter', sans-serif" font-size="10" font-weight="900" fill="#334155" letter-spacing="0.2">WE MAKE TRADING EASY</text>
+                </svg>
+            </div>
+
+            <div>
+                <h1 class="text-yellow-500 font-black text-sm md:text-base tracking-wider leading-none">TRADING SHREE</h1>
+                <span class="text-blue-500 font-extrabold text-[9px] tracking-widest block mt-0.5">CLIENT DASHBOARD</span>
+            </div>
+        </div>
+
+        <div class="hidden md:flex items-center space-x-2">
+            <h2 class="text-gray-100 font-extrabold text-xs md:text-sm tracking-widest uppercase flex items-center gap-1.5">
+                <span>MARKET MODE &amp; SIGNAL DASHBOARD</span>
+            </h2>
+        </div>
+
+        <!-- RIGHT HEADER -->
+        <div class="flex items-center space-x-3">
+            <a href="admin.html" target="_blank" class="bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-400 font-black px-2.5 py-1.5 rounded text-[10px] flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-lock text-[9px]"></i>
+                <span>Admin Panel</span>
+            </a>
+
+            <button onclick="openClientConfigModal()" class="bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-400 font-black px-2.5 py-1.5 rounded text-[10px] flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-key text-[9px]"></i>
+                <span>API Setup</span>
+            </button>
+
+            <div class="relative cursor-pointer p-1">
+                <i class="fa-regular fa-bell text-gray-400 text-sm hover:text-white transition"></i>
+                <span class="absolute -top-0.5 -right-0.5 bg-red-600 text-[8px] font-black px-1 rounded-full text-white">3</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WRAPPER -->
+    <div class="flex flex-col lg:flex-row min-h-[calc(100vh-60px)]">
+        
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="w-full lg:w-48 bg-[#040914] border-r border-gray-900/90 flex flex-col p-2 space-y-1 shrink-0 select-none">
+            <a href="#" class="flex items-center space-x-3 bg-blue-600 text-white px-3 py-2 rounded-lg font-black tracking-wide shadow-md shadow-blue-950/40">
+                <i class="fa-solid fa-house-chimney w-4 text-center"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#overviewSec" class="flex items-center space-x-3 text-gray-400 hover:bg-gray-900/60 hover:text-white px-3 py-2 rounded-lg font-bold transition">
+                <i class="fa-solid fa-chart-pie w-4 text-center"></i>
+                <span>Market Overview</span>
+            </a>
+            <a href="#signalsSec" class="flex items-center space-x-3 text-gray-400 hover:bg-gray-900/60 hover:text-white px-3 py-2 rounded-lg font-bold transition">
+                <i class="fa-solid fa-tower-broadcast w-4 text-center"></i>
+                <span>Signals</span>
+            </a>
+            <a href="javascript:void(0)" onclick="openClientConfigModal()" class="flex items-center space-x-3 text-blue-400 hover:bg-blue-950/20 px-3 py-2 rounded-lg font-bold transition">
+                <i class="fa-solid fa-user-gear w-4 text-center"></i>
+                <span>API &amp; Profile Setup</span>
+            </a>
+            <a href="#contactSec" class="flex items-center space-x-3 text-gray-400 hover:bg-gray-900/60 hover:text-white px-3 py-2 rounded-lg font-bold transition">
+                <i class="fa-regular fa-circle-question w-4 text-center"></i>
+                <span>Support</span>
+            </a>
+            <a href="#" class="flex items-center space-x-3 text-red-500 hover:bg-red-950/20 px-3 py-2 rounded-lg font-extrabold transition mt-auto">
+                <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center"></i>
+                <span>Logout</span>
+            </a>
+        </aside>
+
+        <!-- DASHBOARD BODY CONTENT -->
+        <main class="flex-1 p-3 md:p-4 space-y-3.5 flex flex-col overflow-x-hidden">
+            
+            <!-- TOP 5 LIVE INDEX TICKER CARDS -->
+            <div id="overviewSec" class="grid grid-cols-2 md:grid-cols-5 gap-2.5">
+                <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 flex flex-col justify-between relative overflow-hidden">
+                    <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">NIFTY 50</span>
+                    <div class="flex items-end justify-between mt-3">
+                        <span id="niftyLive" class="text-emerald-400 font-black text-base md:text-lg font-mono-num">23,940.50</span>
+                        <svg class="w-14 h-5 stroke-emerald-500 fill-none" viewBox="0 0 100 30">
+                            <path d="M0 25 Q25 20, 45 15 T75 8 T100 2" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 flex flex-col justify-between relative overflow-hidden">
+                    <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">BANK NIFTY</span>
+                    <div class="flex items-end justify-between mt-3">
+                        <span id="bankLive" class="text-emerald-400 font-black text-base md:text-lg font-mono-num">51,285.75</span>
+                        <svg class="w-14 h-5 stroke-emerald-500 fill-none" viewBox="0 0 100 30">
+                            <path d="M0 26 Q20 22, 50 14 T80 6 T100 3" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 flex flex-col justify-between relative overflow-hidden">
+                    <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">SENSEX</span>
+                    <div class="flex items-end justify-between mt-3">
+                        <span id="sensexLive" class="text-emerald-400 font-black text-base md:text-lg font-mono-num">78,672.12</span>
+                        <svg class="w-14 h-5 stroke-emerald-500 fill-none" viewBox="0 0 100 30">
+                            <path d="M0 24 Q30 20, 60 12 T90 5 T100 2" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 flex flex-col justify-between relative overflow-hidden">
+                    <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">NIFTY MIDCAP 150</span>
+                    <div class="flex items-end justify-between mt-3">
+                        <span id="midcapLive" class="text-emerald-400 font-black text-base md:text-lg font-mono-num">20,145.30</span>
+                        <svg class="w-14 h-5 stroke-emerald-500 fill-none" viewBox="0 0 100 30">
+                            <path d="M0 25 Q35 18, 65 14 T100 4" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 col-span-2 md:col-span-1 flex flex-col justify-between relative overflow-hidden">
+                    <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">INDIA VIX</span>
+                    <div class="flex items-end justify-between mt-3">
+                        <span id="vixLive" class="text-rose-400 font-black text-base md:text-lg font-mono-num">12.45</span>
+                        <svg class="w-14 h-5 stroke-rose-500 fill-none" viewBox="0 0 100 30">
+                            <path d="M0 4 Q30 12, 60 18 T90 26 T100 28" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN WORKSPACE GRID -->
+            <div id="signalsSec" class="grid grid-cols-1 xl:grid-cols-4 gap-3.5 flex-1">
+                
+                <!-- LEFT SCANNER -->
+                <div class="xl:col-span-3 space-y-3.5">
+                    <div class="bg-[#050b18] border border-gray-900 rounded-lg overflow-hidden shadow-lg">
+                        <div class="px-3.5 py-2.5 bg-gray-950/70 border-b border-gray-900 flex justify-between items-center">
+                            <div>
+                                <h3 class="font-black text-white text-xs tracking-wider uppercase flex items-center gap-2">
+                                    <span>REAL-TIME MARKET MODE SCANNER</span>
+                                </h3>
+                                <p class="text-[9px] text-gray-400 mt-0.5">Live Algorithmic Trend Analysis</p>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="flex items-center space-x-1.5 text-emerald-400 font-black text-[9px] bg-emerald-950/50 border border-emerald-800/60 px-2 py-0.5 rounded-full">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot"></span>
+                                    <span>STREAMING LIVE</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto custom-scroll">
+                            <table class="w-full text-left border-collapse min-w-[620px]">
+                                <thead>
+                                    <tr class="border-b border-gray-900 text-gray-400 font-extrabold uppercase tracking-wider text-[9px] bg-[#030712]/60">
+                                        <th class="py-3 px-3.5">TIMEFRAME</th>
+                                        <th class="py-3 px-3.5">MARKET MODE (9 EMA vs 30 EMA)</th>
+                                        <th class="py-3 px-3.5">TREND STRENGTH (STR)</th>
+                                        <th class="py-3 px-3.5">LAST CROSS</th>
+                                        <th class="py-3 px-3.5">CURRENT PRICE</th>
+                                        <th class="py-3 px-3.5 text-center">SIGNAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-900 font-semibold" id="signalsTable">
+                                    <tr id="row-1m" class="hover:bg-gray-900/20 transition">
+                                        <td class="py-3.5 px-3.5 font-black text-blue-400 text-xs">1 MINUTE</td>
+                                        <td class="py-3.5 px-3.5">
+                                            <div class="flex items-center space-x-2">
+                                                <i class="fa-regular fa-circle-up text-emerald-400 text-base"></i>
+                                                <div>
+                                                    <p class="text-emerald-400 font-black text-xs leading-none">BULLISH</p>
+                                                    <span class="text-[8px] text-gray-400 font-mono-num font-bold">9 EMA &gt; 30 EMA</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-3.5">
+                                            <div class="flex items-center space-x-1.5">
+                                                <span class="text-emerald-400 font-black text-[10px]">STRONG</span>
+                                                <span class="inline-flex space-x-0.5 text-emerald-400 text-[6px]">
+                                                    <i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-3.5">
+                                            <p class="text-emerald-400 font-bold">Bullish Cross</p>
+                                            <span class="text-[9px] text-gray-400 font-mono-num" id="cross-1m">10:15 AM</span>
+                                        </td>
+                                        <td class="py-3.5 px-3.5 text-emerald-400 font-black font-mono-num text-xs transition" id="price-1m">23,940.50</td>
+                                        <td class="py-3.5 px-3.5 text-center">
+                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow transition">
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                                <span>BUY</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="row-5m" class="hover:bg-gray-900/20 transition">
+                                        <td class="py-3.5 px-3.5 font-black text-blue-400 text-xs">5 MINUTE</td>
+                                        <td class="py-3.5 px-3.5">
+                                            <div class="flex items-center space-x-2">
+                                                <i class="fa-regular fa-circle-up text-emerald-400 text-base"></i>
+                                                <div>
+                                                    <p class="text-emerald-400 font-black text-xs leading-none">BULLISH</p>
+                                                    <span class="text-[8px] text-gray-400 font-mono-num font-bold">9 EMA &gt; 30 EMA</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-3.5">
+                                            <div class="flex items-center space-x-1.5">
+                                                <span class="text-yellow-400 font-black text-[10px]">MODERATE</span>
+                                                <span class="inline-flex space-x-0.5 text-[6px]">
+                                                    <span class="text-yellow-400 inline-flex space-x-0.5"><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i></span><span class="text-gray-700"><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i></span>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-3.5">
+                                            <p class="text-emerald-400 font-bold">Bullish Cross</p>
+                                            <span class="text-[9px] text-gray-400 font-mono-num" id="cross-5m">09:45 AM</span>
+                                        </td>
+                                        <td class="py-3.5 px-3.5 text-emerald-400 font-black font-mono-num text-xs transition" id="price-5m">23,938.20</td>
+                                        <td class="py-3.5 px-3.5 text-center">
+                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow transition">
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                                <span>BUY</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="row-15m" class="hover:bg-gray-900/20 transition">
+                                        <td class="py-3.5 px-3.5 font-black text-blue-400 text-xs">15 MINUTE</td>
+                                        <td class="py-3.5 px-3.5">
+                                            <div class="flex items-center space-x-2">
+                                                <i class="fa-regular fa-circle-down text-rose-500 text-base"></i>
+                                                <div>
+                                                    <p class="text-rose-500 font-black text-xs leading-none">BEARISH</p>
+                                                    <span class="text-[8px] text-gray-400 font-mono-num font-bold">9 EMA &lt; 30 EMA</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-3.5">
+                                            <div class="flex items-center space-x-1.5">
+                                                <span class="text-amber-500 font-black text-[10px]">WEAK</span>
+                                                <span class="inline-flex space-x-0.5 text-[6px]">
+                                                    <span class="text-amber-500 inline-flex space-x-0.5"><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i></span><span class="text-gray-800"><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i></span>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-3.5">
+                                            <p class="text-rose-500 font-bold">Bearish Cross</p>
+                                            <span class="text-[9px] text-gray-400 font-mono-num" id="cross-15m">09:30 AM</span>
+                                        </td>
+                                        <td class="py-3.5 px-3.5 text-rose-500 font-black font-mono-num text-xs transition" id="price-15m">23,925.10</td>
+                                        <td class="py-3.5 px-3.5 text-center">
+                                            <button class="bg-rose-700 hover:bg-rose-600 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow transition">
+                                                <i class="fa-solid fa-arrow-down"></i>
+                                                <span>SELL</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr id="row-1h" class="hover:bg-gray-900/20 transition">
+                                        <td class="py-3.5 px-3.5 font-black text-blue-400 text-xs">1 HOUR</td>
+                                        <td class="py-3.5 px-3.5">
+                                            <div class="flex items-center space-x-2">
+                                                <i class="fa-regular fa-circle-up text-emerald-400 text-base"></i>
+                                                <div>
+                                                    <p class="text-emerald-400 font-black text-xs leading-none">BULLISH</p>
+                                                    <span class="text-[8px] text-gray-400 font-mono-num font-bold">9 EMA &gt; 30 EMA</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-3.5">
+                                            <div class="flex items-center space-x-1.5">
+                                                <span class="text-emerald-400 font-black text-[10px]">STRONG</span>
+                                                <span class="inline-flex space-x-0.5 text-emerald-400 text-[6px]">
+                                                    <i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i><i class="fa-solid fa-square"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="py-3.5 px-3.5">
+                                            <p class="text-emerald-400 font-bold">Bullish Cross</p>
+                                            <span class="text-[9px] text-gray-400 font-mono-num" id="cross-1h">08:00 AM</span>
+                                        </td>
+                                        <td class="py-3.5 px-3.5 text-emerald-400 font-black font-mono-num text-xs transition" id="price-1h">23,885.75</td>
+                                        <td class="py-3.5 px-3.5 text-center">
+                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow transition">
+                                                <i class="fa-solid fa-arrow-up"></i>
+                                                <span>BUY</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ANALYTICAL CARDS -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="bg-[#050b18] border border-gray-900 rounded-lg p-4 flex flex-col justify-between items-center text-center">
+                            <span class="text-gray-400 font-black text-[10px] tracking-widest uppercase">MAJORITY VOTE</span>
+                            <div class="my-3 flex flex-col items-center">
+                                <div class="w-12 h-12 rounded-full bg-emerald-950/50 border border-emerald-500/50 flex items-center justify-center text-emerald-400 mb-2 shadow-lg">
+                                    <i class="fa-solid fa-arrow-up text-xl font-black"></i>
+                                </div>
+                                <h4 class="text-white font-black text-2xl tracking-wider leading-none">BUY</h4>
+                            </div>
+                            <span class="text-emerald-400 font-bold text-[10px]">Buy on Dips Preferred</span>
+                        </div>
+
+                        <div class="bg-[#050b18] border border-gray-900 rounded-lg p-4 space-y-2">
+                            <div class="flex justify-between items-center border-b border-gray-900 pb-1.5">
+                                <span class="text-gray-400 font-black text-[10px] tracking-widest uppercase">PERFORMANCE</span>
+                                <span class="text-blue-500 font-bold text-[9px]">(This Month)</span>
+                            </div>
+                            <div class="space-y-1.5 font-semibold text-gray-300">
+                                <div class="flex justify-between">
+                                    <span>Total Trades</span>
+                                    <span class="text-white font-extrabold font-mono-num">42</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Win Rate</span>
+                                    <span class="text-emerald-400 font-extrabold font-mono-num">67.85%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Profit Factor</span>
+                                    <span class="text-emerald-400 font-extrabold font-mono-num">1.85</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Net Profit</span>
+                                    <span class="text-emerald-400 font-extrabold font-mono-num">₹ 24,560.75</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#050b18] border border-gray-900 rounded-lg p-4 flex flex-col justify-between space-y-2">
+                            <span class="text-gray-400 font-black text-[10px] tracking-widest uppercase border-b border-gray-900 pb-1.5 block">SUMMARY</span>
+                            <div class="space-y-2 font-bold">
+                                <div class="flex justify-between">
+                                    <span class="text-emerald-400">Bullish Timeframes</span>
+                                    <span class="text-white font-mono-num font-black">: 3</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-rose-500">Bearish Timeframes</span>
+                                    <span class="text-white font-mono-num font-black">: 1</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-yellow-400">Neutral Timeframes</span>
+                                    <span class="text-white font-mono-num font-black">: 0</span>
+                                </div>
+                                <div class="flex justify-between border-t border-gray-900/80 pt-2">
+                                    <span class="text-gray-300">Market Strength</span>
+                                    <span class="text-emerald-400 font-black">: STRONG</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE PANEL -->
+                <div class="space-y-3.5">
+                    <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3.5 text-center">
+                        <div class="flex items-center justify-center space-x-2 text-blue-400 font-black text-sm tracking-wider">
+                            <i class="fa-regular fa-clock"></i>
+                            <span id="liveClock" class="font-mono-num">--:--:-- --</span>
+                        </div>
+                        <p id="liveDate" class="text-white font-black text-xs mt-1">-- --- ----</p>
+                        <span id="liveDay" class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">------</span>
+                        
+                        <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-gray-900 text-[8px] font-black">
+                            <span class="flex items-center space-x-1.5 text-emerald-400">
+                                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full live-dot"></span>
+                                <span>SYSTEM STATUS: LIVE</span>
+                            </span>
+                            <span class="flex items-center space-x-1.5 text-emerald-400">
+                                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full live-dot"></span>
+                                <span>AUTO REFRESH: ON</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- CLIENT PROFILE CARD -->
+                    <div class="bg-[#050b18] border border-gray-900 rounded-lg p-4 text-center relative group">
+                        <div class="flex justify-between items-center mb-2.5">
+                            <span class="text-gray-400 font-black text-[9px] tracking-widest uppercase block text-left">CLIENT PROFILE</span>
+                            <button onclick="openClientConfigModal()" class="text-blue-400 hover:text-white text-[9px] font-bold flex items-center gap-1 transition">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <span>Edit</span>
+                            </button>
+                        </div>
+
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="w-16 h-16 shrink-0 mb-1.5 hover:scale-105 transition-transform cursor-pointer" onclick="openClientConfigModal()">
+                                <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow">
+                                    <circle cx="100" cy="100" r="96" fill="#e8f3fb" stroke="#cbdfe9" stroke-width="3"/>
+                                    <rect x="42" y="78" width="22" height="48" rx="5" fill="#d93829"/>
+                                    <rect x="71" y="60" width="22" height="66" rx="5" fill="#facc15"/>
+                                    <rect x="100" y="44" width="22" height="82" rx="5" fill="#16a34a"/>
+                                    <path d="M 32 135 C 70 135, 115 125, 155 84 L 142 82 L 168 80 L 157 106 L 149 93 C 112 133, 68 142, 32 139 Z" fill="#ea580c"/>
+                                    <text x="100" y="152" text-anchor="middle" font-family="'Inter', sans-serif" font-size="13" font-weight="800" fill="#22c55e" letter-spacing="0.5">TRADING SHREE</text>
+                                    <text x="100" y="169" text-anchor="middle" font-family="'Inter', sans-serif" font-size="10" font-weight="900" fill="#334155" letter-spacing="0.2">WE MAKE TRADING EASY</text>
+                                </svg>
+                            </div>
+                            <h4 class="text-white font-black text-sm mt-1 uppercase tracking-wide cursor-pointer hover:text-blue-400 transition" id="profileClientId" onclick="openClientConfigModal()">CLIENT</h4>
+                            <span class="text-[9px] text-yellow-500 font-extrabold uppercase tracking-wider">Premium Plan</span>
+                        </div>
+
+                        <div class="mt-3.5 space-y-1.5 text-left text-gray-400 font-semibold border-t border-gray-900 pt-3">
+                            <div class="flex items-center space-x-2 text-[10px]">
+                                <i class="fa-regular fa-envelope text-blue-400 w-3.5 text-center"></i>
+                                <span class="truncate font-mono-num text-gray-300" id="profileClientEmail">client@email.com</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-[10px]">
+                                <i class="fa-solid fa-phone text-blue-400 w-3.5 text-center"></i>
+                                <span class="font-mono-num text-gray-300" id="profileClientMobile">+91 9435463157</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-[10px]">
+                                <i class="fa-solid fa-location-dot text-blue-400 w-3.5 text-center"></i>
+                                <span>India</span>
+                            </div>
+                            <div class="flex items-center justify-between text-[9px] pt-1.5 border-t border-gray-900/60 font-mono-num">
+                                <span class="text-gray-500">Broker API:</span>
+                                <span id="profileApiBadge" class="text-emerald-400 font-bold flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check text-[8px]"></i>
+                                    <span>Configured</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACCOUNT OVERVIEW -->
+                    <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3.5 space-y-2.5">
+                        <span class="text-gray-400 font-black text-[9px] tracking-widest uppercase border-b border-gray-900 pb-1.5 flex justify-between items-center">
+                            <span>ACCOUNT OVERVIEW</span>
+                            <span class="text-amber-400">✨</span>
+                        </span>
+                        <div class="space-y-1.5 font-semibold font-mono-num">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400 font-sans">Total Balance</span>
+                                <span class="text-white font-extrabold">₹ 1,25,430.50</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400 font-sans">Available Margin</span>
+                                <span class="text-white font-extrabold">₹ 78,245.10</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400 font-sans">Used Margin</span>
+                                <span class="text-white font-extrabold">₹ 47,185.40</span>
+                            </div>
+                            <div class="flex justify-between border-t border-gray-900 pt-1.5">
+                                <span class="text-gray-300 font-sans font-bold">Today's P&amp;L</span>
+                                <span class="text-emerald-400 font-black">₹ 2,345.60</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- CONTACT SECTION -->
+            <section id="contactSec" class="mt-6 pt-5 pb-2 border-t border-gray-900/80">
+                <div class="text-center mb-5 relative">
+                    <div class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/10 via-yellow-500/20 to-amber-500/10 border border-yellow-500/30 px-3.5 py-1 rounded-full mb-2 backdrop-blur">
+                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-400 live-dot"></span>
+                        <span class="text-yellow-400 font-black text-[10px] tracking-widest uppercase">OFFICIAL DESK</span>
+                    </div>
+                    <h3 class="text-white font-black text-lg md:text-xl tracking-wider uppercase flex items-center justify-center gap-2">
+                        <span>TRADING SHREE</span>
+                        <span class="text-yellow-400">SUPPORT &amp; CONTACT</span>
+                    </h3>
+                </div>
+
+                <div class="bg-gradient-to-b from-[#070e1f] via-[#050b18] to-[#02050e] border border-gray-800/90 hover:border-blue-500/40 rounded-xl p-3 md:p-4 shadow-2xl transition-all duration-300">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <a href="tel:9435463157" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#08152e] border border-gray-800/80 hover:border-emerald-500/50 p-3 rounded-lg transition-all duration-200">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-sm shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <span class="text-[8px] text-emerald-400 font-black uppercase tracking-wider">CALL DIRECT</span>
+                                <p class="text-white font-extrabold text-xs md:text-sm font-mono-num truncate mt-0.5">+91 9435463157</p>
+                            </div>
+                        </a>
+
+                        <a href="https://wa.me/919435463157" target="_blank" rel="noopener noreferrer" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#08152e] border border-gray-800/80 hover:border-emerald-500/50 p-3 rounded-lg transition-all duration-200">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-base shrink-0">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <span class="text-[8px] text-emerald-400 font-black uppercase tracking-wider">WHATSAPP CHAT</span>
+                                <p class="text-white font-extrabold text-xs md:text-sm font-mono-num truncate mt-0.5">+91 9435463157</p>
+                            </div>
+                        </a>
+
+                        <a href="mailto:mrsuraj3157@gmail.com" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#1a0c16]/50 border border-gray-800/80 hover:border-rose-500/50 p-3 rounded-lg transition-all duration-200">
+                            <div class="w-10 h-10 rounded-xl bg-rose-950/50 border border-rose-500/40 flex items-center justify-center text-rose-400 text-sm shrink-0">
+                                <i class="fa-regular fa-envelope"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <span class="text-[8px] text-rose-400 font-black uppercase tracking-wider block">OFFICIAL EMAIL</span>
+                                <p class="text-white font-bold text-[11px] md:text-xs font-mono-num truncate mt-0.5">mrsuraj3157@gmail.com</p>
+                            </div>
+                        </a>
+
+                        <div class="flex flex-col justify-between bg-[#030713]/90 border border-gray-800/80 p-3 rounded-lg">
+                            <span class="text-[8px] text-gray-400 font-black uppercase tracking-wider">OFFICIAL COMMUNITY</span>
+                            <div class="flex items-center justify-between pt-2">
+                                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#071329] border border-blue-900/60 flex items-center justify-center text-blue-400 hover:text-white hover:bg-blue-600 transition"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#1e0a16] border border-pink-900/60 flex items-center justify-center text-pink-400 hover:text-white hover:bg-pink-600 transition"><i class="fa-brands fa-instagram text-xs"></i></a>
+                                <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#051829] border border-sky-900/60 flex items-center justify-center text-sky-400 hover:text-white hover:bg-sky-500 transition"><i class="fa-brands fa-telegram text-xs"></i></a>
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#1f0a0a] border border-red-900/60 flex items-center justify-center text-red-400 hover:text-white hover:bg-red-600 transition"><i class="fa-brands fa-youtube text-xs"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- CLIENT CONFIG MODAL -->
+    <div id="clientConfigModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#050b18] border border-gray-800 rounded-xl max-w-md w-full p-5 space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-gray-800/80 pb-3">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
+                        <i class="fa-solid fa-user-shield text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-black text-sm uppercase tracking-wider">Client &amp; Broker Setup</h3>
+                        <p class="text-[9px] text-gray-400">Configure your personal profile &amp; Broker API Keys</p>
+                    </div>
+                </div>
+                <button onclick="closeClientConfigModal()" class="text-gray-400 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+
+            <form id="clientConfigForm" onsubmit="saveClientConfig(event)" class="space-y-3">
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Client Name / ID</label>
+                    <input type="text" id="inputClientId" required placeholder="e.g. SURAJ SUMAN / TS1024" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-bold text-xs rounded-lg px-3 py-2 outline-none transition">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Mobile Number</label>
+                        <input type="text" id="inputClientMobile" required placeholder="+91 9435463157" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num font-bold text-xs rounded-lg px-3 py-2 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Gmail / Email</label>
+                        <input type="email" id="inputClientEmail" required placeholder="client@email.com" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num font-bold text-xs rounded-lg px-3 py-2 outline-none transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Trading Broker</label>
+                    <select id="inputClientBroker" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-bold text-xs rounded-lg px-3 py-2 outline-none transition">
+                        <option value="Zerodha">Zerodha (Kite Connect)</option>
+                        <option value="IIFL Capital">IIFL Capital (TT Connect)</option>
+                        <option value="Angel One">Angel One (SmartAPI)</option>
+                        <option value="Upstox">Upstox Pro API</option>
+                        <option value="Dhan">DhanHQ</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Broker API Key</label>
+                    <input type="text" id="inputApiKey" placeholder="Enter API Key from Broker Portal" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num text-xs rounded-lg px-3 py-2 outline-none transition">
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Broker Secret Key / Token</label>
+                    <div class="relative">
+                        <input type="password" id="inputApiSecret" placeholder="••••••••••••••••••••••••" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num text-xs rounded-lg pl-3 pr-10 py-2 outline-none transition">
+                        <button type="button" onclick="toggleSecretVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-300">
+                            <i class="fa-regular fa-eye text-xs" id="secretEyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end space-x-2.5 pt-2 border-t border-gray-900">
+                    <button type="button" onclick="closeClientConfigModal()" class="bg-gray-900 hover:bg-gray-800 text-gray-300 font-bold text-xs px-4 py-2 rounded-lg transition">Cancel</button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-2 rounded-lg shadow-lg transition">Save &amp; Connect</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION MODAL -->
+    <div id="noticeModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#050b18] border border-gray-800 rounded-lg max-w-sm w-full p-4 space-y-3 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                <h4 class="text-white font-black text-xs uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                    <span>Trading Shree Terminal</span>
+                </h4>
+                <button onclick="closeNoticeModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p id="noticeModalMsg" class="text-gray-300 text-xs"></p>
+            <div class="text-right">
+                <button onclick="closeNoticeModal()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-3 py-1 rounded text-xs transition">Dismiss</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function refreshClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            const formattedHours = String(hours).padStart(2, '0');
+
+            const clockEl = document.getElementById('liveClock');
+            if (clockEl) clockEl.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
+
+            const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            
+            const dateEl = document.getElementById('liveDate');
+            const dayEl = document.getElementById('liveDay');
+            if (dateEl) dateEl.textContent = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            if (dayEl) dayEl.textContent = days[now.getDay()];
+        }
+
+        const CLIENT_STORAGE_KEY = "ts_current_active_client";
+        const MASTER_CLIENTS_KEY = "ts_all_clients_master";
+
+        function loadClientConfig() {
+            const saved = localStorage.getItem(CLIENT_STORAGE_KEY);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    if (data.clientId) {
+                        document.getElementById('profileClientId').textContent = data.clientId;
+                        document.getElementById('inputClientId').value = data.clientId;
+                    }
+                    if (data.mobile) {
+                        document.getElementById('profileClientMobile').textContent = data.mobile;
+                        document.getElementById('inputClientMobile').value = data.mobile;
+                    }
+                    if (data.email) {
+                        document.getElementById('profileClientEmail').textContent = data.email;
+                        document.getElementById('inputClientEmail').value = data.email;
+                    }
+                    if (data.broker) document.getElementById('inputClientBroker').value = data.broker;
+                    if (data.apiKey) document.getElementById('inputApiKey').value = data.apiKey;
+                    if (data.apiSecret) document.getElementById('inputApiSecret').value = data.apiSecret;
+
+                    const profileApiBadge = document.getElementById('profileApiBadge');
+                    if (profileApiBadge) {
+                        profileApiBadge.innerHTML = data.apiKey
+                            ? `<i class="fa-solid fa-circle-check text-[8px]"></i><span>Configured (${data.broker || 'Broker'})</span>`
+                            : `<i class="fa-solid fa-circle-exclamation text-[8px] text-amber-400"></i><span class="text-amber-400">Not Set</span>`;
+                    }
+                } catch (e) {
+                    console.error("Error reading saved profile:", e);
+                }
+            }
+        }
+
+        function saveClientConfig(event) {
+            event.preventDefault();
+
+            const clientData = {
+                clientId: document.getElementById('inputClientId').value.trim() || 'CLIENT',
+                mobile: document.getElementById('inputClientMobile').value.trim() || '+91 9435463157',
+                email: document.getElementById('inputClientEmail').value.trim() || 'client@email.com',
+                broker: document.getElementById('inputClientBroker').value,
+                apiKey: document.getElementById('inputApiKey').value.trim(),
+                apiSecret: document.getElementById('inputApiSecret').value.trim(),
+                todayPnL: "+₹ 2,345.60",
+                balance: "₹ 1,25,430.50",
+                status: "Active",
+                updatedAt: new Date().toLocaleTimeString()
+            };
+
+            // 1. Current Browser me save
+            localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify(clientData));
+
+            // 2. Central Admin Master List me add/update karna
+            let masterList = JSON.parse(localStorage.getItem(MASTER_CLIENTS_KEY) || "[]");
+            const existingIndex = masterList.findIndex(c => c.clientId.toLowerCase() === clientData.clientId.toLowerCase());
+            if (existingIndex >= 0) {
+                masterList[existingIndex] = clientData;
+            } else {
+                masterList.push(clientData);
+            }
+            localStorage.setItem(MASTER_CLIENTS_KEY, JSON.stringify(masterList));
+
+            // Update UI
+            document.getElementById('profileClientId').textContent = clientData.clientId;
+            document.getElementById('profileClientMobile').textContent = clientData.mobile;
+            document.getElementById('profileClientEmail').textContent = clientData.email;
+
+            const profileApiBadge = document.getElementById('profileApiBadge');
+            if (profileApiBadge) {
+                profileApiBadge.innerHTML = clientData.apiKey
+                    ? `<i class="fa-solid fa-circle-check text-[8px]"></i><span>Configured (${clientData.broker})</span>`
+                    : `<i class="fa-solid fa-circle-exclamation text-[8px] text-amber-400"></i><span class="text-amber-400">Not Set</span>`;
+            }
+
+            closeClientConfigModal();
+            openNoticeModal(`Credentials for ${clientData.clientId} (${clientData.broker}) saved and synced to Admin Dashboard.`);
+        }
+
+        function openClientConfigModal() {
+            document.getElementById('clientConfigModal').classList.remove('hidden');
+        }
+
+        function closeClientConfigModal() {
+            document.getElementById('clientConfigModal').classList.add('hidden');
+        }
+
+        function toggleSecretVisibility() {
+            const input = document.getElementById('inputApiSecret');
+            const icon = document.getElementById('secretEyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash text-xs text-blue-400';
+            } else {
+                input.type = 'password';
+                icon.className = 'fa-regular fa-eye text-xs text-gray-500';
+            }
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('clientConfigModal');
+            if (event.target === modal) {
+                closeClientConfigModal();
+            }
+        };
+
+        // Live Price Stream Engine
+        let niftyVal = 23940.50;
+        let bankVal = 51285.75;
+        let sensexVal = 78672.12;
+        let midcapVal = 20145.30;
+        let vixVal = 12.45;
+
+        function formatINR(val, digits = 2) {
+            return val.toLocaleString('en-IN', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+        }
+
+        function triggerFlash(el, isUp) {
+            if (!el) return;
+            el.classList.remove('tick-green', 'tick-red');
+            void el.offsetWidth;
+            el.classList.add(isUp ? 'tick-green' : 'tick-red');
+        }
+
+        function streamLiveTicks() {
+            const deltaNifty = (Math.random() - 0.49) * 2.2;
+            niftyVal = +(niftyVal + deltaNifty).toFixed(2);
+            const isNiftyUp = deltaNifty >= 0;
+
+            const niftyEl = document.getElementById('niftyLive');
+            if (niftyEl) {
+                niftyEl.textContent = formatINR(niftyVal);
+                triggerFlash(niftyEl, isNiftyUp);
+            }
+
+            const p1m = document.getElementById('price-1m');
+            const p5m = document.getElementById('price-5m');
+            const p15m = document.getElementById('price-15m');
+            const p1h = document.getElementById('price-1h');
+            const row1m = document.getElementById('row-1m');
+
+            if (p1m) { p1m.textContent = formatINR(niftyVal); triggerFlash(p1m, isNiftyUp); }
+            if (p5m) { p5m.textContent = formatINR(niftyVal - 2.30); }
+            if (p15m) { p15m.textContent = formatINR(niftyVal - 15.40); }
+            if (p1h) { p1h.textContent = formatINR(niftyVal - 54.75); }
+            if (row1m) triggerFlash(row1m, isNiftyUp);
+
+            if (Math.random() > 0.25) {
+                const deltaBank = (Math.random() - 0.49) * 4.8;
+                bankVal = +(bankVal + deltaBank).toFixed(2);
+                const bankEl = document.getElementById('bankLive');
+                if (bankEl) { bankEl.textContent = formatINR(bankVal); triggerFlash(bankEl, deltaBank >= 0); }
+            }
+
+            if (Math.random() > 0.3) {
+                const deltaSensex = (Math.random() - 0.49) * 6.5;
+                sensexVal = +(sensexVal + deltaSensex).toFixed(2);
+                const sensexEl = document.getElementById('sensexLive');
+                if (sensexEl) { sensexEl.textContent = formatINR(sensexVal); triggerFlash(sensexEl, deltaSensex >= 0); }
+            }
+        }
+
+        function openNoticeModal(msg) {
+            document.getElementById('noticeModalMsg').textContent = msg;
+            document.getElementById('noticeModal').classList.remove('hidden');
+        }
+        function closeNoticeModal() {
+            document.getElementById('noticeModal').classList.add('hidden');
+        }
+
+        const toggleBtn = document.getElementById('sidebarToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) sidebar.classList.toggle('hidden');
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            refreshClock();
+            setInterval(refreshClock, 1000);
+            setInterval(streamLiveTicks, 1000);
+            loadClientConfig();
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Shree - Master Admin Terminal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
