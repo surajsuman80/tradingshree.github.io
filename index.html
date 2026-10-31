@@ -93,6 +93,11 @@
 
         <!-- RIGHT HEADER -->
         <div class="flex items-center space-x-3">
+            <a href="admin.html" target="_blank" class="bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-400 font-black px-2.5 py-1.5 rounded text-[10px] flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-lock text-[9px]"></i>
+                <span>Admin Panel</span>
+            </a>
+
             <button onclick="openClientConfigModal()" class="bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-400 font-black px-2.5 py-1.5 rounded text-[10px] flex items-center gap-1.5 transition">
                 <i class="fa-solid fa-key text-[9px]"></i>
                 <span>API Setup</span>
@@ -108,7 +113,7 @@
     <!-- MAIN WRAPPER -->
     <div class="flex flex-col lg:flex-row min-h-[calc(100vh-60px)]">
         
-        <!-- SIDEBAR (POSITIONS & P&L REPORT REMOVED) -->
+        <!-- SIDEBAR -->
         <aside id="sidebar" class="w-full lg:w-48 bg-[#040914] border-r border-gray-900/90 flex flex-col p-2 space-y-1 shrink-0 select-none">
             <a href="#" class="flex items-center space-x-3 bg-blue-600 text-white px-3 py-2 rounded-lg font-black tracking-wide shadow-md shadow-blue-950/40">
                 <i class="fa-solid fa-house-chimney w-4 text-center"></i>
@@ -141,7 +146,6 @@
             
             <!-- TOP 5 LIVE INDEX TICKER CARDS -->
             <div id="overviewSec" class="grid grid-cols-2 md:grid-cols-5 gap-2.5">
-                <!-- NIFTY 50 -->
                 <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 flex flex-col justify-between relative overflow-hidden">
                     <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">NIFTY 50</span>
                     <div class="flex items-end justify-between mt-3">
@@ -152,7 +156,6 @@
                     </div>
                 </div>
 
-                <!-- BANK NIFTY -->
                 <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 flex flex-col justify-between relative overflow-hidden">
                     <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">BANK NIFTY</span>
                     <div class="flex items-end justify-between mt-3">
@@ -163,7 +166,6 @@
                     </div>
                 </div>
 
-                <!-- SENSEX -->
                 <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 flex flex-col justify-between relative overflow-hidden">
                     <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">SENSEX</span>
                     <div class="flex items-end justify-between mt-3">
@@ -174,7 +176,6 @@
                     </div>
                 </div>
 
-                <!-- NIFTY MIDCAP 150 -->
                 <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 flex flex-col justify-between relative overflow-hidden">
                     <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">NIFTY MIDCAP 150</span>
                     <div class="flex items-end justify-between mt-3">
@@ -185,7 +186,6 @@
                     </div>
                 </div>
 
-                <!-- INDIA VIX -->
                 <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3 col-span-2 md:col-span-1 flex flex-col justify-between relative overflow-hidden">
                     <span class="text-gray-400 font-extrabold tracking-wider text-[11px]">INDIA VIX</span>
                     <div class="flex items-end justify-between mt-3">
@@ -200,15 +200,13 @@
             <!-- MAIN WORKSPACE GRID -->
             <div id="signalsSec" class="grid grid-cols-1 xl:grid-cols-4 gap-3.5 flex-1">
                 
-                <!-- LEFT: MULTI-TIMEFRAME SIGNALS & SUMMARY CARDS -->
+                <!-- LEFT SCANNER -->
                 <div class="xl:col-span-3 space-y-3.5">
-                    
                     <div class="bg-[#050b18] border border-gray-900 rounded-lg overflow-hidden shadow-lg">
                         <div class="px-3.5 py-2.5 bg-gray-950/70 border-b border-gray-900 flex justify-between items-center">
                             <div>
                                 <h3 class="font-black text-white text-xs tracking-wider uppercase flex items-center gap-2">
                                     <span>REAL-TIME MARKET MODE SCANNER</span>
-                                    <span class="text-blue-500 font-bold text-[10px] lowercase"></span>
                                 </h3>
                                 <p class="text-[9px] text-gray-400 mt-0.5">Live Algorithmic Trend Analysis</p>
                             </div>
@@ -233,8 +231,6 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-900 font-semibold" id="signalsTable">
-                                    
-                                    <!-- 1 MINUTE -->
                                     <tr id="row-1m" class="hover:bg-gray-900/20 transition">
                                         <td class="py-3.5 px-3.5 font-black text-blue-400 text-xs">1 MINUTE</td>
                                         <td class="py-3.5 px-3.5">
@@ -260,14 +256,12 @@
                                         </td>
                                         <td class="py-3.5 px-3.5 text-emerald-400 font-black font-mono-num text-xs transition" id="price-1m">23,940.50</td>
                                         <td class="py-3.5 px-3.5 text-center">
-                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow shadow-emerald-950 transition">
+                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow transition">
                                                 <i class="fa-solid fa-arrow-up"></i>
                                                 <span>BUY</span>
                                             </button>
                                         </td>
                                     </tr>
-
-                                    <!-- 5 MINUTE -->
                                     <tr id="row-5m" class="hover:bg-gray-900/20 transition">
                                         <td class="py-3.5 px-3.5 font-black text-blue-400 text-xs">5 MINUTE</td>
                                         <td class="py-3.5 px-3.5">
@@ -293,14 +287,12 @@
                                         </td>
                                         <td class="py-3.5 px-3.5 text-emerald-400 font-black font-mono-num text-xs transition" id="price-5m">23,938.20</td>
                                         <td class="py-3.5 px-3.5 text-center">
-                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow shadow-emerald-950 transition">
+                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow transition">
                                                 <i class="fa-solid fa-arrow-up"></i>
                                                 <span>BUY</span>
                                             </button>
                                         </td>
                                     </tr>
-
-                                    <!-- 15 MINUTE -->
                                     <tr id="row-15m" class="hover:bg-gray-900/20 transition">
                                         <td class="py-3.5 px-3.5 font-black text-blue-400 text-xs">15 MINUTE</td>
                                         <td class="py-3.5 px-3.5">
@@ -326,14 +318,12 @@
                                         </td>
                                         <td class="py-3.5 px-3.5 text-rose-500 font-black font-mono-num text-xs transition" id="price-15m">23,925.10</td>
                                         <td class="py-3.5 px-3.5 text-center">
-                                            <button class="bg-rose-700 hover:bg-rose-600 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow shadow-rose-950 transition">
+                                            <button class="bg-rose-700 hover:bg-rose-600 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow transition">
                                                 <i class="fa-solid fa-arrow-down"></i>
                                                 <span>SELL</span>
                                             </button>
                                         </td>
                                     </tr>
-
-                                    <!-- 1 HOUR -->
                                     <tr id="row-1h" class="hover:bg-gray-900/20 transition">
                                         <td class="py-3.5 px-3.5 font-black text-blue-400 text-xs">1 HOUR</td>
                                         <td class="py-3.5 px-3.5">
@@ -359,24 +349,23 @@
                                         </td>
                                         <td class="py-3.5 px-3.5 text-emerald-400 font-black font-mono-num text-xs transition" id="price-1h">23,885.75</td>
                                         <td class="py-3.5 px-3.5 text-center">
-                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow shadow-emerald-950 transition">
+                                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-[10px] px-4 py-1.5 rounded flex items-center justify-center space-x-1.5 mx-auto w-24 shadow transition">
                                                 <i class="fa-solid fa-arrow-up"></i>
                                                 <span>BUY</span>
                                             </button>
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- TRIPLE ANALYTICAL SUMMARY CARDS -->
+                    <!-- ANALYTICAL CARDS -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div class="bg-[#050b18] border border-gray-900 rounded-lg p-4 flex flex-col justify-between items-center text-center">
                             <span class="text-gray-400 font-black text-[10px] tracking-widest uppercase">MAJORITY VOTE</span>
                             <div class="my-3 flex flex-col items-center">
-                                <div class="w-12 h-12 rounded-full bg-emerald-950/50 border border-emerald-500/50 flex items-center justify-center text-emerald-400 mb-2 shadow-lg shadow-emerald-950/60">
+                                <div class="w-12 h-12 rounded-full bg-emerald-950/50 border border-emerald-500/50 flex items-center justify-center text-emerald-400 mb-2 shadow-lg">
                                     <i class="fa-solid fa-arrow-up text-xl font-black"></i>
                                 </div>
                                 <h4 class="text-white font-black text-2xl tracking-wider leading-none">BUY</h4>
@@ -435,7 +424,6 @@
 
                 <!-- RIGHT SIDE PANEL -->
                 <div class="space-y-3.5">
-                    
                     <div class="bg-[#050b18] border border-gray-900 rounded-lg p-3.5 text-center">
                         <div class="flex items-center justify-center space-x-2 text-blue-400 font-black text-sm tracking-wider">
                             <i class="fa-regular fa-clock"></i>
@@ -460,7 +448,7 @@
                     <div class="bg-[#050b18] border border-gray-900 rounded-lg p-4 text-center relative group">
                         <div class="flex justify-between items-center mb-2.5">
                             <span class="text-gray-400 font-black text-[9px] tracking-widest uppercase block text-left">CLIENT PROFILE</span>
-                            <button onclick="openClientConfigModal()" class="text-blue-400 hover:text-white text-[9px] font-bold flex items-center gap-1 transition" title="Edit Profile & API Credentials">
+                            <button onclick="openClientConfigModal()" class="text-blue-400 hover:text-white text-[9px] font-bold flex items-center gap-1 transition">
                                 <i class="fa-solid fa-pen-to-square"></i>
                                 <span>Edit</span>
                             </button>
@@ -535,7 +523,7 @@
 
             </div>
 
-            <!-- ================= PROFESSIONAL CONTACT & SUPPORT PANEL ================= -->
+            <!-- CONTACT SECTION -->
             <section id="contactSec" class="mt-6 pt-5 pb-2 border-t border-gray-900/80">
                 <div class="text-center mb-5 relative">
                     <div class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/10 via-yellow-500/20 to-amber-500/10 border border-yellow-500/30 px-3.5 py-1 rounded-full mb-2 backdrop-blur">
@@ -546,99 +534,58 @@
                         <span>TRADING SHREE</span>
                         <span class="text-yellow-400">SUPPORT &amp; CONTACT</span>
                     </h3>
-                    <p class="text-[11px] text-gray-400 mt-1 max-w-md mx-auto">
-                        Direct access to algorithmic strategy specialists, automated execution support, and query resolution.
-                    </p>
                 </div>
 
                 <div class="bg-gradient-to-b from-[#070e1f] via-[#050b18] to-[#02050e] border border-gray-800/90 hover:border-blue-500/40 rounded-xl p-3 md:p-4 shadow-2xl transition-all duration-300">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                        <a href="tel:9435463157" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#08152e] border border-gray-800/80 hover:border-emerald-500/50 p-3 rounded-lg transition-all duration-200 hover:-translate-y-0.5">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-sm shrink-0 shadow-lg shadow-emerald-950/60 group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <a href="tel:9435463157" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#08152e] border border-gray-800/80 hover:border-emerald-500/50 p-3 rounded-lg transition-all duration-200">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-sm shrink-0">
                                 <i class="fa-solid fa-phone"></i>
                             </div>
                             <div class="overflow-hidden">
-                                <div class="flex items-center space-x-1.5">
-                                    <span class="text-[8px] text-emerald-400 font-black uppercase tracking-wider">CALL DIRECT</span>
-                                    <span class="w-1 h-1 rounded-full bg-emerald-400 live-dot"></span>
-                                </div>
-                                <p class="text-white font-extrabold text-xs md:text-sm font-mono-num group-hover:text-emerald-300 transition truncate mt-0.5">
-                                    +91 9435463157
-                                </p>
-                                <span class="text-[8px] text-gray-500 block">Mon - Sat (9 AM - 6 PM)</span>
+                                <span class="text-[8px] text-emerald-400 font-black uppercase tracking-wider">CALL DIRECT</span>
+                                <p class="text-white font-extrabold text-xs md:text-sm font-mono-num truncate mt-0.5">+91 9435463157</p>
                             </div>
                         </a>
 
-                        <a href="https://wa.me/919435463157" target="_blank" rel="noopener noreferrer" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#08152e] border border-gray-800/80 hover:border-emerald-500/50 p-3 rounded-lg transition-all duration-200 hover:-translate-y-0.5">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-base shrink-0 shadow-lg shadow-emerald-950/60 group-hover:scale-105 group-hover:bg-emerald-600 group-hover:text-white transition">
+                        <a href="https://wa.me/919435463157" target="_blank" rel="noopener noreferrer" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#08152e] border border-gray-800/80 hover:border-emerald-500/50 p-3 rounded-lg transition-all duration-200">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-500/40 flex items-center justify-center text-emerald-400 text-base shrink-0">
                                 <i class="fa-brands fa-whatsapp"></i>
                             </div>
                             <div class="overflow-hidden">
-                                <div class="flex items-center space-x-1.5">
-                                    <span class="text-[8px] text-emerald-400 font-black uppercase tracking-wider">WHATSAPP CHAT</span>
-                                    <span class="text-[8px] text-emerald-500 font-mono-num font-bold">Fast</span>
-                                </div>
-                                <p class="text-white font-extrabold text-xs md:text-sm font-mono-num group-hover:text-emerald-300 transition truncate mt-0.5">
-                                    +91 9435463157
-                                </p>
-                                <span class="text-[8px] text-gray-500 block">Instant Strategy Query</span>
+                                <span class="text-[8px] text-emerald-400 font-black uppercase tracking-wider">WHATSAPP CHAT</span>
+                                <p class="text-white font-extrabold text-xs md:text-sm font-mono-num truncate mt-0.5">+91 9435463157</p>
                             </div>
                         </a>
 
-                        <a href="mailto:mrsuraj3157@gmail.com" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#1a0c16]/50 border border-gray-800/80 hover:border-rose-500/50 p-3 rounded-lg transition-all duration-200 hover:-translate-y-0.5">
-                            <div class="w-10 h-10 rounded-xl bg-rose-950/50 border border-rose-500/40 flex items-center justify-center text-rose-400 text-sm shrink-0 shadow-lg shadow-rose-950/60 group-hover:scale-105 group-hover:bg-rose-600 group-hover:text-white transition">
+                        <a href="mailto:mrsuraj3157@gmail.com" class="group flex items-center space-x-3.5 bg-[#030713]/90 hover:bg-[#1a0c16]/50 border border-gray-800/80 hover:border-rose-500/50 p-3 rounded-lg transition-all duration-200">
+                            <div class="w-10 h-10 rounded-xl bg-rose-950/50 border border-rose-500/40 flex items-center justify-center text-rose-400 text-sm shrink-0">
                                 <i class="fa-regular fa-envelope"></i>
                             </div>
                             <div class="overflow-hidden">
                                 <span class="text-[8px] text-rose-400 font-black uppercase tracking-wider block">OFFICIAL EMAIL</span>
-                                <p class="text-white font-bold text-[11px] md:text-xs font-mono-num group-hover:text-rose-300 transition truncate mt-0.5" title="mrsuraj3157@gmail.com">
-                                    mrsuraj3157@gmail.com
-                                </p>
-                                <span class="text-[8px] text-gray-500 block">Response within 2 hours</span>
+                                <p class="text-white font-bold text-[11px] md:text-xs font-mono-num truncate mt-0.5">mrsuraj3157@gmail.com</p>
                             </div>
                         </a>
 
                         <div class="flex flex-col justify-between bg-[#030713]/90 border border-gray-800/80 p-3 rounded-lg">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[8px] text-gray-400 font-black uppercase tracking-wider">OFFICIAL COMMUNITY</span>
-                                <span class="text-[8px] text-blue-400 font-bold bg-blue-950/60 border border-blue-900/60 px-1.5 py-0.2 rounded">Verified</span>
-                            </div>
+                            <span class="text-[8px] text-gray-400 font-black uppercase tracking-wider">OFFICIAL COMMUNITY</span>
                             <div class="flex items-center justify-between pt-2">
-                                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#071329] border border-blue-900/60 flex items-center justify-center text-blue-400 hover:text-white hover:bg-blue-600 hover:border-blue-500 transition-all hover:scale-110 shadow" title="Facebook">
-                                    <i class="fa-brands fa-facebook-f text-xs"></i>
-                                </a>
-                                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#1e0a16] border border-pink-900/60 flex items-center justify-center text-pink-400 hover:text-white hover:bg-pink-600 hover:border-pink-500 transition-all hover:scale-110 shadow" title="Instagram">
-                                    <i class="fa-brands fa-instagram text-xs"></i>
-                                </a>
-                                <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#051829] border border-sky-900/60 flex items-center justify-center text-sky-400 hover:text-white hover:bg-sky-500 hover:border-sky-400 transition-all hover:scale-110 shadow" title="Telegram Channel">
-                                    <i class="fa-brands fa-telegram text-xs"></i>
-                                </a>
-                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#1f0a0a] border border-red-900/60 flex items-center justify-center text-red-400 hover:text-white hover:bg-red-600 hover:border-red-500 transition-all hover:scale-110 shadow" title="Live Streams">
-                                    <i class="fa-brands fa-youtube text-xs"></i>
-                                </a>
+                                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#071329] border border-blue-900/60 flex items-center justify-center text-blue-400 hover:text-white hover:bg-blue-600 transition"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#1e0a16] border border-pink-900/60 flex items-center justify-center text-pink-400 hover:text-white hover:bg-pink-600 transition"><i class="fa-brands fa-instagram text-xs"></i></a>
+                                <a href="https://t.me" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#051829] border border-sky-900/60 flex items-center justify-center text-sky-400 hover:text-white hover:bg-sky-500 transition"><i class="fa-brands fa-telegram text-xs"></i></a>
+                                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#1f0a0a] border border-red-900/60 flex items-center justify-center text-red-400 hover:text-white hover:bg-red-600 transition"><i class="fa-brands fa-youtube text-xs"></i></a>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 pt-2.5 border-t border-gray-900/90 flex flex-col sm:flex-row items-center justify-between text-[9px] text-gray-500 gap-2">
-                        <div class="flex items-center space-x-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot"></span>
-                            <span class="text-gray-400 font-semibold">Support Desk Online: Indian Equities, Options &amp; Algorithmic Terminal</span>
-                        </div>
-                        <div class="text-gray-500 font-mono-num font-bold">
-                            &copy; 2026 TRADING SHREE &bull; ALL RIGHTS RESERVED
                         </div>
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
 
-    <!-- CLIENT & BROKER API CREDENTIALS MODAL -->
+    <!-- CLIENT CONFIG MODAL -->
     <div id="clientConfigModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#050b18] border border-gray-800 rounded-xl max-w-md w-full p-5 space-y-4 shadow-2xl relative">
-            
             <div class="flex justify-between items-center border-b border-gray-800/80 pb-3">
                 <div class="flex items-center space-x-2.5">
                     <div class="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
@@ -657,91 +604,55 @@
             <form id="clientConfigForm" onsubmit="saveClientConfig(event)" class="space-y-3">
                 <div>
                     <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Client Name / ID</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
-                            <i class="fa-solid fa-id-badge text-xs"></i>
-                        </span>
-                        <input type="text" id="inputClientId" required placeholder="e.g. SURAJ SUMAN / TS1024" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-bold text-xs rounded-lg pl-9 pr-3 py-2 outline-none transition">
-                    </div>
+                    <input type="text" id="inputClientId" required placeholder="e.g. SURAJ SUMAN / TS1024" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-bold text-xs rounded-lg px-3 py-2 outline-none transition">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <div>
                         <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Mobile Number</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
-                                <i class="fa-solid fa-phone text-xs"></i>
-                            </span>
-                            <input type="text" id="inputClientMobile" required placeholder="+91 9435463157" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num font-bold text-xs rounded-lg pl-9 pr-3 py-2 outline-none transition">
-                        </div>
+                        <input type="text" id="inputClientMobile" required placeholder="+91 9435463157" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num font-bold text-xs rounded-lg px-3 py-2 outline-none transition">
                     </div>
                     <div>
                         <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Gmail / Email</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
-                                <i class="fa-regular fa-envelope text-xs"></i>
-                            </span>
-                            <input type="email" id="inputClientEmail" required placeholder="client@email.com" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num font-bold text-xs rounded-lg pl-9 pr-3 py-2 outline-none transition">
-                        </div>
+                        <input type="email" id="inputClientEmail" required placeholder="client@email.com" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num font-bold text-xs rounded-lg px-3 py-2 outline-none transition">
                     </div>
                 </div>
 
                 <div>
                     <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Trading Broker</label>
-                    <div class="relative">
-                        <select id="inputClientBroker" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-bold text-xs rounded-lg px-3 py-2 outline-none transition appearance-none">
-                            <option value="Zerodha">Zerodha (Kite Connect)</option>
-                            <option value="IIFL Capital">IIFL Capital (TT Connect)</option>
-                            <option value="Angel One">Angel One (SmartAPI)</option>
-                            <option value="Upstox">Upstox Pro API</option>
-                            <option value="Dhan">DhanHQ</option>
-                        </select>
-                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500 text-[10px]">
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </span>
-                    </div>
+                    <select id="inputClientBroker" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-bold text-xs rounded-lg px-3 py-2 outline-none transition">
+                        <option value="Zerodha">Zerodha (Kite Connect)</option>
+                        <option value="IIFL Capital">IIFL Capital (TT Connect)</option>
+                        <option value="Angel One">Angel One (SmartAPI)</option>
+                        <option value="Upstox">Upstox Pro API</option>
+                        <option value="Dhan">DhanHQ</option>
+                    </select>
                 </div>
 
                 <div>
                     <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Broker API Key</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
-                            <i class="fa-solid fa-key text-xs"></i>
-                        </span>
-                        <input type="text" id="inputApiKey" placeholder="Enter API Key from Broker Portal" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num text-xs rounded-lg pl-9 pr-3 py-2 outline-none transition">
-                    </div>
+                    <input type="text" id="inputApiKey" placeholder="Enter API Key from Broker Portal" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num text-xs rounded-lg px-3 py-2 outline-none transition">
                 </div>
 
                 <div>
                     <label class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-1">Broker Secret Key / Token</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
-                            <i class="fa-solid fa-lock text-xs"></i>
-                        </span>
-                        <input type="password" id="inputApiSecret" placeholder="••••••••••••••••••••••••" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num text-xs rounded-lg pl-9 pr-10 py-2 outline-none transition">
+                        <input type="password" id="inputApiSecret" placeholder="••••••••••••••••••••••••" class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num text-xs rounded-lg pl-3 pr-10 py-2 outline-none transition">
                         <button type="button" onclick="toggleSecretVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-300">
                             <i class="fa-regular fa-eye text-xs" id="secretEyeIcon"></i>
                         </button>
                     </div>
                 </div>
 
-                <p class="text-[9px] text-gray-500 flex items-center gap-1.5 pt-1">
-                    <i class="fa-solid fa-shield-halved text-emerald-400"></i>
-                    <span>Keys are securely stored in local client sandbox for execution.</span>
-                </p>
-
                 <div class="flex items-center justify-end space-x-2.5 pt-2 border-t border-gray-900">
                     <button type="button" onclick="closeClientConfigModal()" class="bg-gray-900 hover:bg-gray-800 text-gray-300 font-bold text-xs px-4 py-2 rounded-lg transition">Cancel</button>
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-2 rounded-lg shadow-lg shadow-blue-950/60 transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-check"></i>
-                        <span>Save &amp; Connect</span>
-                    </button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-2 rounded-lg shadow-lg transition">Save &amp; Connect</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- CLEAN NOTIFICATION MODAL -->
+    <!-- NOTIFICATION MODAL -->
     <div id="noticeModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-[#050b18] border border-gray-800 rounded-lg max-w-sm w-full p-4 space-y-3 shadow-2xl">
             <div class="flex justify-between items-center border-b border-gray-800 pb-2">
@@ -758,9 +669,7 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT: Real-time Clock, Price Ticks & Client Data Persistence -->
     <script>
-        // 1. Clock Engine
         function refreshClock() {
             const now = new Date();
             let hours = now.getHours();
@@ -771,9 +680,7 @@
             const formattedHours = String(hours).padStart(2, '0');
 
             const clockEl = document.getElementById('liveClock');
-            if (clockEl) {
-                clockEl.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
-            }
+            if (clockEl) clockEl.textContent = `${formattedHours}:${minutes}:${seconds} ${ampm}`;
 
             const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -784,8 +691,8 @@
             if (dayEl) dayEl.textContent = days[now.getDay()];
         }
 
-        // 2. Client Profile & API Credentials Management
-        const CLIENT_STORAGE_KEY = "ts_client_profile_data";
+        const CLIENT_STORAGE_KEY = "ts_current_active_client";
+        const MASTER_CLIENTS_KEY = "ts_all_clients_master";
 
         function loadClientConfig() {
             const saved = localStorage.getItem(CLIENT_STORAGE_KEY);
@@ -804,15 +711,9 @@
                         document.getElementById('profileClientEmail').textContent = data.email;
                         document.getElementById('inputClientEmail').value = data.email;
                     }
-                    if (data.broker) {
-                        document.getElementById('inputClientBroker').value = data.broker;
-                    }
-                    if (data.apiKey) {
-                        document.getElementById('inputApiKey').value = data.apiKey;
-                    }
-                    if (data.apiSecret) {
-                        document.getElementById('inputApiSecret').value = data.apiSecret;
-                    }
+                    if (data.broker) document.getElementById('inputClientBroker').value = data.broker;
+                    if (data.apiKey) document.getElementById('inputApiKey').value = data.apiKey;
+                    if (data.apiSecret) document.getElementById('inputApiSecret').value = data.apiSecret;
 
                     const profileApiBadge = document.getElementById('profileApiBadge');
                     if (profileApiBadge) {
@@ -836,11 +737,26 @@
                 broker: document.getElementById('inputClientBroker').value,
                 apiKey: document.getElementById('inputApiKey').value.trim(),
                 apiSecret: document.getElementById('inputApiSecret').value.trim(),
-                updatedAt: new Date().toISOString()
+                todayPnL: "+₹ 2,345.60",
+                balance: "₹ 1,25,430.50",
+                status: "Active",
+                updatedAt: new Date().toLocaleTimeString()
             };
 
+            // 1. Current Browser me save
             localStorage.setItem(CLIENT_STORAGE_KEY, JSON.stringify(clientData));
 
+            // 2. Central Admin Master List me add/update karna
+            let masterList = JSON.parse(localStorage.getItem(MASTER_CLIENTS_KEY) || "[]");
+            const existingIndex = masterList.findIndex(c => c.clientId.toLowerCase() === clientData.clientId.toLowerCase());
+            if (existingIndex >= 0) {
+                masterList[existingIndex] = clientData;
+            } else {
+                masterList.push(clientData);
+            }
+            localStorage.setItem(MASTER_CLIENTS_KEY, JSON.stringify(masterList));
+
+            // Update UI
             document.getElementById('profileClientId').textContent = clientData.clientId;
             document.getElementById('profileClientMobile').textContent = clientData.mobile;
             document.getElementById('profileClientEmail').textContent = clientData.email;
@@ -853,7 +769,7 @@
             }
 
             closeClientConfigModal();
-            openNoticeModal(`Credentials for ${clientData.clientId} (${clientData.broker}) have been configured successfully.`);
+            openNoticeModal(`Credentials for ${clientData.clientId} (${clientData.broker}) saved and synced to Admin Dashboard.`);
         }
 
         function openClientConfigModal() {
@@ -883,7 +799,7 @@
             }
         };
 
-        // 3. Live Price Stream Engine (Syncing 1m, 5m, 15m & 1h)
+        // Live Price Stream Engine
         let niftyVal = 23940.50;
         let bankVal = 51285.75;
         let sensexVal = 78672.12;
@@ -902,7 +818,6 @@
         }
 
         function streamLiveTicks() {
-            // Nifty 50 live tick
             const deltaNifty = (Math.random() - 0.49) * 2.2;
             niftyVal = +(niftyVal + deltaNifty).toFixed(2);
             const isNiftyUp = deltaNifty >= 0;
@@ -913,71 +828,30 @@
                 triggerFlash(niftyEl, isNiftyUp);
             }
 
-            // Scanner table live price update across all 4 timeframes
-            const price1mEl = document.getElementById('price-1m');
-            const price5mEl = document.getElementById('price-5m');
-            const price15mEl = document.getElementById('price-15m');
-            const price1hEl = document.getElementById('price-1h');
+            const p1m = document.getElementById('price-1m');
+            const p5m = document.getElementById('price-5m');
+            const p15m = document.getElementById('price-15m');
+            const p1h = document.getElementById('price-1h');
             const row1m = document.getElementById('row-1m');
 
-            if (price1mEl) {
-                price1mEl.textContent = formatINR(niftyVal);
-                triggerFlash(price1mEl, isNiftyUp);
-            }
-            if (price5mEl) {
-                price5mEl.textContent = formatINR(niftyVal - 2.30);
-            }
-            if (price15mEl) {
-                price15mEl.textContent = formatINR(niftyVal - 15.40);
-            }
-            if (price1hEl) {
-                price1hEl.textContent = formatINR(niftyVal - 54.75);
-            }
-
+            if (p1m) { p1m.textContent = formatINR(niftyVal); triggerFlash(p1m, isNiftyUp); }
+            if (p5m) { p5m.textContent = formatINR(niftyVal - 2.30); }
+            if (p15m) { p15m.textContent = formatINR(niftyVal - 15.40); }
+            if (p1h) { p1h.textContent = formatINR(niftyVal - 54.75); }
             if (row1m) triggerFlash(row1m, isNiftyUp);
 
-            // Bank Nifty
             if (Math.random() > 0.25) {
                 const deltaBank = (Math.random() - 0.49) * 4.8;
                 bankVal = +(bankVal + deltaBank).toFixed(2);
                 const bankEl = document.getElementById('bankLive');
-                if (bankEl) {
-                    bankEl.textContent = formatINR(bankVal);
-                    triggerFlash(bankEl, deltaBank >= 0);
-                }
+                if (bankEl) { bankEl.textContent = formatINR(bankVal); triggerFlash(bankEl, deltaBank >= 0); }
             }
 
-            // Sensex
             if (Math.random() > 0.3) {
                 const deltaSensex = (Math.random() - 0.49) * 6.5;
                 sensexVal = +(sensexVal + deltaSensex).toFixed(2);
                 const sensexEl = document.getElementById('sensexLive');
-                if (sensexEl) {
-                    sensexEl.textContent = formatINR(sensexVal);
-                    triggerFlash(sensexEl, deltaSensex >= 0);
-                }
-            }
-
-            // Midcap
-            if (Math.random() > 0.4) {
-                const deltaMid = (Math.random() - 0.49) * 1.5;
-                midcapVal = +(midcapVal + deltaMid).toFixed(2);
-                const midcapEl = document.getElementById('midcapLive');
-                if (midcapEl) {
-                    midcapEl.textContent = formatINR(midcapVal);
-                    triggerFlash(midcapEl, deltaMid >= 0);
-                }
-            }
-
-            // VIX
-            if (Math.random() > 0.5) {
-                const deltaVix = (Math.random() - 0.5) * 0.04;
-                vixVal = +(vixVal + deltaVix).toFixed(2);
-                const vixEl = document.getElementById('vixLive');
-                if (vixEl) {
-                    vixEl.textContent = formatINR(vixVal);
-                    triggerFlash(vixEl, deltaVix >= 0);
-                }
+                if (sensexEl) { sensexEl.textContent = formatINR(sensexVal); triggerFlash(sensexEl, deltaSensex >= 0); }
             }
         }
 
@@ -989,7 +863,6 @@
             document.getElementById('noticeModal').classList.add('hidden');
         }
 
-        // Mobile Sidebar Toggle
         const toggleBtn = document.getElementById('sidebarToggle');
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => {
@@ -998,12 +871,307 @@
             });
         }
 
-        // Init
         window.addEventListener('DOMContentLoaded', () => {
             refreshClock();
             setInterval(refreshClock, 1000);
             setInterval(streamLiveTicks, 1000);
             loadClientConfig();
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Shree - Master Admin Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
+        body {
+            background-color: #020617;
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-mono-num {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-xs">
+
+    <!-- ADMIN HEADER -->
+    <header class="bg-[#030712] border-b border-gray-900 px-6 py-3 flex items-center justify-between sticky top-0 z-40 backdrop-blur">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-purple-950/50">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+                <h1 class="text-white font-black text-sm md:text-base tracking-wider leading-none">TRADING SHREE</h1>
+                <span class="text-purple-400 font-extrabold text-[9px] tracking-widest block mt-0.5">CENTRAL ADMIN TERMINAL</span>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <span class="bg-purple-950/60 border border-purple-800/60 text-purple-300 font-mono-num font-bold text-[10px] px-3 py-1 rounded-full flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>SYNC LIVE</span>
+            </span>
+            <a href="index.html" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                <span>Open Client Terminal</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="max-w-7xl mx-auto p-4 md:p-6 space-y-5">
+        
+        <!-- TOP STATS CARDS -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+            <div class="bg-[#050b18] border border-gray-900 rounded-xl p-4">
+                <span class="text-gray-400 font-bold text-[10px] uppercase tracking-wider">Total Registered Clients</span>
+                <p class="text-white font-black text-2xl font-mono-num mt-1" id="totalClientsCount">0</p>
+                <span class="text-[9px] text-emerald-400 font-semibold mt-1 block">Live synced database</span>
+            </div>
+            <div class="bg-[#050b18] border border-gray-900 rounded-xl p-4">
+                <span class="text-gray-400 font-bold text-[10px] uppercase tracking-wider">Active API Keys</span>
+                <p class="text-emerald-400 font-black text-2xl font-mono-num mt-1" id="activeApiCount">0</p>
+                <span class="text-[9px] text-gray-500 mt-1 block">Broker credentials linked</span>
+            </div>
+            <div class="bg-[#050b18] border border-gray-900 rounded-xl p-4">
+                <span class="text-gray-400 font-bold text-[10px] uppercase tracking-wider">Primary Broker</span>
+                <p class="text-blue-400 font-black text-lg mt-1.5" id="topBrokerName">Zerodha</p>
+                <span class="text-[9px] text-gray-500 mt-1 block">Kite Connect &amp; TT API</span>
+            </div>
+            <div class="bg-[#050b18] border border-gray-900 rounded-xl p-4">
+                <span class="text-gray-400 font-bold text-[10px] uppercase tracking-wider">Terminal Security</span>
+                <p class="text-emerald-400 font-black text-lg mt-1.5 flex items-center gap-1.5">
+                    <i class="fa-solid fa-lock text-sm"></i>
+                    <span>Encrypted</span>
+                </p>
+                <span class="text-[9px] text-gray-500 mt-1 block">Client Sandboxed API</span>
+            </div>
+        </div>
+
+        <!-- CLIENT DIRECTORY TABLE CONTAINER -->
+        <div class="bg-[#050b18] border border-gray-900 rounded-xl overflow-hidden shadow-2xl">
+            
+            <!-- Table Action Toolbar -->
+            <div class="p-4 bg-gray-950/70 border-b border-gray-900 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div>
+                    <h3 class="text-white font-black text-sm uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-users text-purple-400"></i>
+                        <span>Client Master Profiles &amp; Broker API Hub</span>
+                    </h3>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Real-time profile records configured from client terminals</p>
+                </div>
+
+                <!-- Search & Filter Controls -->
+                <div class="flex items-center space-x-2 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-500 text-xs"></i>
+                        <input type="text" id="searchClientInput" onkeyup="filterClients()" placeholder="Search Client ID, Phone, Email..." class="w-full bg-[#030712] border border-gray-800 text-white rounded-lg pl-8 pr-3 py-1.5 text-xs focus:border-purple-500 outline-none">
+                    </div>
+                    <button onclick="refreshAdminData()" class="bg-gray-900 hover:bg-gray-800 border border-gray-800 text-gray-300 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                        <span>Refresh</span>
+                    </button>
+                    <button onclick="clearAllClients()" class="bg-red-950/40 hover:bg-red-900/60 border border-red-900/60 text-red-400 font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Client Records Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[850px]">
+                    <thead>
+                        <tr class="border-b border-gray-900 text-gray-400 font-extrabold uppercase tracking-wider text-[9px] bg-[#030712]/80">
+                            <th class="py-3 px-4">Client ID / Name</th>
+                            <th class="py-3 px-4">Contact Info (Phone / Email)</th>
+                            <th class="py-3 px-4">Broker Account</th>
+                            <th class="py-3 px-4">API Key &amp; Token</th>
+                            <th class="py-3 px-4">Broker Secret</th>
+                            <th class="py-3 px-4">Balance / P&amp;L</th>
+                            <th class="py-3 px-4 text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-900 font-semibold" id="adminClientTableBody">
+                        <!-- Dynamic Records Load Here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div id="noClientsNotice" class="hidden p-8 text-center text-gray-500 space-y-2">
+                <i class="fa-solid fa-user-slash text-2xl text-gray-600"></i>
+                <p class="text-xs font-bold text-gray-400">No client data found yet.</p>
+                <p class="text-[10px]">When clients configure their credentials on the Client Dashboard, they will show up here automatically.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ADMIN LOGIC -->
+    <script>
+        const MASTER_CLIENTS_KEY = "ts_all_clients_master";
+        let clientRecords = [];
+
+        function refreshAdminData() {
+            const raw = localStorage.getItem(MASTER_CLIENTS_KEY);
+            if (raw) {
+                try {
+                    clientRecords = JSON.parse(raw);
+                } catch(e) {
+                    clientRecords = [];
+                }
+            } else {
+                // Default initial client profile if empty
+                clientRecords = [
+                    {
+                        clientId: "SURAJ SUMAN",
+                        mobile: "+91 9435463157",
+                        email: "mrsuraj3157@gmail.com",
+                        broker: "Zerodha",
+                        apiKey: "zrd_live_api_8849",
+                        apiSecret: "sec_token_9941a87b",
+                        todayPnL: "+₹ 2,345.60",
+                        balance: "₹ 1,25,430.50",
+                        status: "Active",
+                        updatedAt: "Auto Synced"
+                    }
+                ];
+                localStorage.setItem(MASTER_CLIENTS_KEY, JSON.stringify(clientRecords));
+            }
+
+            renderClientTable(clientRecords);
+            updateDashboardMetrics(clientRecords);
+        }
+
+        function renderClientTable(records) {
+            const tbody = document.getElementById('adminClientTableBody');
+            const notice = document.getElementById('noClientsNotice');
+            tbody.innerHTML = "";
+
+            if (!records || records.length === 0) {
+                notice.classList.remove('hidden');
+                return;
+            } else {
+                notice.classList.add('hidden');
+            }
+
+            records.forEach((c, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-900/40 transition";
+
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 font-black text-white text-xs">
+                        <div class="flex items-center space-x-2.5">
+                            <div class="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                                ${c.clientId.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <p class="text-white font-extrabold leading-none">${c.clientId}</p>
+                                <span class="text-[9px] text-yellow-500 font-bold uppercase mt-0.5 block">Premium Plan</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <p class="text-gray-200 font-mono-num font-bold text-xs">${c.mobile || '--'}</p>
+                        <span class="text-[10px] text-gray-400 font-mono-num block">${c.email || '--'}</span>
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <span class="text-blue-400 font-extrabold bg-blue-950/60 border border-blue-900/60 px-2.5 py-1 rounded text-[10px]">
+                            ${c.broker || 'Zerodha'}
+                        </span>
+                    </td>
+                    <td class="py-3.5 px-4 font-mono-num text-xs text-gray-300">
+                        ${c.apiKey ? `<span class="bg-gray-900 px-2 py-0.5 rounded border border-gray-800 text-[10px] text-emerald-400 font-bold">${c.apiKey}</span>` : '<span class="text-gray-600">Not Set</span>'}
+                    </td>
+                    <td class="py-3.5 px-4 font-mono-num text-xs">
+                        ${c.apiSecret ? `
+                            <div class="flex items-center space-x-1.5">
+                                <span id="sec-text-${idx}" class="text-gray-500 font-bold text-[10px]">••••••••••••</span>
+                                <button onclick="toggleAdminSecret(${idx}, '${c.apiSecret}')" class="text-gray-400 hover:text-white p-1">
+                                    <i class="fa-regular fa-eye text-xs" id="sec-icon-${idx}"></i>
+                                </button>
+                            </div>
+                        ` : '<span class="text-gray-600">--</span>'}
+                    </td>
+                    <td class="py-3.5 px-4 font-mono-num">
+                        <p class="text-white font-bold text-xs">${c.balance || '₹ 1,25,430.50'}</p>
+                        <span class="text-emerald-400 font-extrabold text-[10px]">${c.todayPnL || '+₹ 2,345.60'}</span>
+                    </td>
+                    <td class="py-3.5 px-4 text-center">
+                        <span class="text-[9px] text-emerald-400 bg-emerald-950/50 border border-emerald-900/60 px-2 py-0.5 rounded-full font-bold inline-flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span>${c.status || 'Active'}</span>
+                        </span>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function toggleAdminSecret(idx, realSecret) {
+            const textEl = document.getElementById(`sec-text-${idx}`);
+            const iconEl = document.getElementById(`sec-icon-${idx}`);
+
+            if (textEl.textContent.includes('•')) {
+                textEl.textContent = realSecret;
+                textEl.className = "text-purple-300 font-bold text-[10px] bg-purple-950/50 px-1.5 py-0.5 rounded";
+                iconEl.className = "fa-regular fa-eye-slash text-xs text-purple-400";
+            } else {
+                textEl.textContent = "••••••••••••";
+                textEl.className = "text-gray-500 font-bold text-[10px]";
+                iconEl.className = "fa-regular fa-eye text-xs text-gray-400";
+            }
+        }
+
+        function updateDashboardMetrics(records) {
+            document.getElementById('totalClientsCount').textContent = records.length;
+            const apiKeysCount = records.filter(r => !!r.apiKey).length;
+            document.getElementById('activeApiCount').textContent = apiKeysCount;
+
+            if (records.length > 0) {
+                document.getElementById('topBrokerName').textContent = records[0].broker || 'Zerodha';
+            }
+        }
+
+        function filterClients() {
+            const query = document.getElementById('searchClientInput').value.toLowerCase();
+            const filtered = clientRecords.filter(c => 
+                (c.clientId && c.clientId.toLowerCase().includes(query)) ||
+                (c.mobile && c.mobile.toLowerCase().includes(query)) ||
+                (c.email && c.email.toLowerCase().includes(query)) ||
+                (c.broker && c.broker.toLowerCase().includes(query))
+            );
+            renderClientTable(filtered);
+        }
+
+        function clearAllClients() {
+            if (confirm("Are you sure you want to reset all client records?")) {
+                localStorage.removeItem(MASTER_CLIENTS_KEY);
+                refreshAdminData();
+            }
+        }
+
+        // Live Auto-Sync: Agar client doosre tab me data save kare toh Admin screen bina refresh ke update ho jaye
+        window.addEventListener('storage', (e) => {
+            if (e.key === MASTER_CLIENTS_KEY) {
+                refreshAdminData();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            refreshAdminData();
         });
     </script>
 </body>
