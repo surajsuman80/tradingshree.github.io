@@ -921,7 +921,7 @@
                   id="profileClientId"
                   onclick="openClientConfigModal()"
                 >
-                  CLIENT
+                  TRADING SHREE
                 </h4>
                 <span
                   class="text-[9px] text-yellow-500 font-extrabold uppercase tracking-wider"
@@ -1435,7 +1435,8 @@
 
         const clientData = {
           clientId:
-            document.getElementById("inputClientId").value.trim() || "CLIENT",
+            document.getElementById("inputClientId").value.trim() ||
+            "TRADING SHREE",
           mobile:
             document.getElementById("inputClientMobile").value.trim() ||
             "+91 9435463157",
@@ -1611,9 +1612,6 @@
         setInterval(refreshClock, 1000);
         setInterval(streamLiveTicks, 1000);
         loadClientConfig();
-        if (!localStorage.getItem(CLIENT_STORAGE_KEY)) {
-          openClientConfigModal();
-        }
       });
     </script>
   </body>
