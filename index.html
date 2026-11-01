@@ -1611,6 +1611,9 @@
         setInterval(refreshClock, 1000);
         setInterval(streamLiveTicks, 1000);
         loadClientConfig();
+        if (!localStorage.getItem(CLIENT_STORAGE_KEY)) {
+          openClientConfigModal();
+        }
       });
     </script>
   </body>
