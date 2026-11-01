@@ -1228,7 +1228,7 @@
                 type="email"
                 id="inputClientEmail"
                 required
-                placeholder="client@email.com"
+                value="mrsuraj3157@gmail.com"
                 class="w-full bg-[#030712] border border-gray-800 focus:border-blue-500 text-white font-mono-num font-bold text-xs rounded-lg px-3 py-2 outline-none transition"
               />
             </div>
@@ -1391,7 +1391,7 @@
       const CLIENT_STORAGE_KEY = "ts_current_active_client";
       const MASTER_CLIENTS_KEY = "ts_all_clients_master";
 
-      function loadClientConfig() {
+      function loadClientConfig(populateForm = true) {
         const saved = localStorage.getItem(CLIENT_STORAGE_KEY);
         if (saved) {
           try {
@@ -1399,23 +1399,29 @@
             if (data.clientId && data.clientId.trim().toUpperCase() !== "DDDDDDD") {
               document.getElementById("profileClientId").textContent =
                 data.clientId;
-              document.getElementById("inputClientId").value = data.clientId;
+              if (populateForm) {
+                document.getElementById("inputClientId").value = data.clientId;
+              }
             }
             if (data.mobile) {
               document.getElementById("profileClientMobile").textContent =
                 data.mobile;
-              document.getElementById("inputClientMobile").value = data.mobile;
+              if (populateForm) {
+                document.getElementById("inputClientMobile").value = data.mobile;
+              }
             }
             if (data.email) {
               document.getElementById("profileClientEmail").textContent =
                 data.email;
-              document.getElementById("inputClientEmail").value = data.email;
+              if (populateForm) {
+                document.getElementById("inputClientEmail").value = data.email;
+              }
             }
-            if (data.broker)
+            if (populateForm && data.broker)
               document.getElementById("inputClientBroker").value = data.broker;
-            if (data.apiKey)
+            if (populateForm && data.apiKey)
               document.getElementById("inputApiKey").value = data.apiKey;
-            if (data.apiSecret)
+            if (populateForm && data.apiSecret)
               document.getElementById("inputApiSecret").value = data.apiSecret;
 
             const profileApiBadge = document.getElementById("profileApiBadge");
@@ -1491,6 +1497,7 @@
       }
 
       function openClientConfigModal() {
+        loadClientConfig();
         document.getElementById("clientConfigModal").classList.remove("hidden");
       }
 
@@ -1611,8 +1618,7 @@
         refreshClock();
         setInterval(refreshClock, 1000);
         setInterval(streamLiveTicks, 1000);
-        loadClientConfig();
-        openClientConfigModal();
+        loadClientConfig(false);
       });
     </script>
   </body>
